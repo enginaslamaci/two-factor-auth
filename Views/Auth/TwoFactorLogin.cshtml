@@ -1,0 +1,59 @@
+﻿@model LoginWith2FA.Models.AuthenticatorVM
+
+@{
+    ViewBag.Title = "TwoFactorLogin";
+    Layout = null;
+}
+
+<head>
+     <title>@ViewData["Title"]</title>
+     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="~/js/qrcode.min.js"></script>
+    <style>
+       .center {
+          border: 1px solid green;
+          margin-top:15vh;
+          padding:15px;
+       }
+    </style>
+</head>
+
+<div class="center">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="alert alert-success">
+                Scan the barcode below with the Google authenticator application on your phone or enter the code on the side into the relevant application.
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="alert alert-info">
+                @Model.ManualEntryKey
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <img src="@Model.QrCodeSetupImageUrl" />
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form method="post">
+                <div class="form-group my-2">
+                    <label>Verification Code</label>
+                    @Html.HiddenFor(r => r.QrCodeSetupImageUrl)
+                    @Html.HiddenFor(r => r.ManualEntryKey)
+                    @Html.HiddenFor(r => r.Account)
+
+                    @Html.TextBoxFor(r => r.UserInputCode, new { @autocomplete = "off" })
+                </div>
+                <button type="submit" class="btn btn-primary">Verify</button>
+                <span class="text-danger">@ViewBag.Message</span>
+            </form>
+        </div>
+    </div>
+<div>
